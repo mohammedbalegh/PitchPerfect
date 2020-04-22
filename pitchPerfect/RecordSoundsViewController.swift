@@ -50,10 +50,6 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             recordButton.isEnabled = startButton
             stopRecordingButton.isEnabled = stopButton    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -61,8 +57,17 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
     
     func  audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        if flag {
-            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url) } else {
+        if !flag {
+            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url) }
+        else {
+            
+            let alert = UIAlertController(title: "Error", message: "Unexpected error occurred", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Try again", style: UIAlertAction.Style.default, handler: {_ in self.recordingState(label: "Tap to button", stopButton: false, startButton: true)}))
+            
+            self.present(alert, animated: true, completion:
+            nil)
+    
+        
         }
     }
     
